@@ -1,0 +1,6 @@
+framework module PKColumnTable {
+  umbrella header "PKColumnTable-umbrella.h"
+
+  export *
+  module * { export * }
+}

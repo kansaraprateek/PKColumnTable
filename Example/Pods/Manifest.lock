@@ -1,0 +1,16 @@
+PODS:
+  - PKColumnTable (0.1.0)
+
+DEPENDENCIES:
+  - PKColumnTable (from `../`)
+
+EXTERNAL SOURCES:
+  PKColumnTable:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PKColumnTable: 5251a240708d79dbe19ac766d379e7a821f166e9
+
+PODFILE CHECKSUM: 51e0f22c8af4bce8b7cb53e786c07ea1c1f8e8d8
+
+COCOAPODS: 1.1.1
