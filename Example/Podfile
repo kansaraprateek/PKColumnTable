@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'PKColumnTable_Example' do
+  pod 'PKColumnTable', :path => '../'
+
+  target 'PKColumnTable_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
