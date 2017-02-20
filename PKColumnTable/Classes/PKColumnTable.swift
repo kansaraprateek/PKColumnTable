@@ -206,7 +206,7 @@ extension PKColumTable : UITableViewDelegate, UITableViewDataSource{
         cell.gRect = gRect
         let cellValueData = NSMutableArray()
         for i in 0..<(tableData[indexPath.row] as AnyObject).count{
-            cellValueData.add([kPKCellTitleKey: (tableData[indexPath.row] as AnyObject)[i], kPKCellWeightKey: gColumnWidths[i]])
+            cellValueData.add([kPKCellTitleKey: (tableData[indexPath.row] as AnyObject).object(at: i), kPKCellWeightKey: gColumnWidths[i]])
         }
         if CellUIData != nil{
             cell.setUITextDict(dictData: CellUIData!)
