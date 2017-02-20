@@ -22,7 +22,7 @@ TODO: Add long description of the pod here.
                        DESC
 
   s.homepage         = 'https://github.com/kansaraprateek/PKColumnTable'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.screenshots     = 'http://www.prateekkansara.com/GitProjectImages/PKColumnTable/PKColumnTableNoScroll.png', 'http://www.prateekkansara.com/GitProjectImages/PKColumnTable/PKColumTableScroll.gif'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'kansaraprateek' => 'prateek@tagrem.com' }
   s.source           = { :git => 'https://github.com/kansaraprateek/PKColumnTable.git', :tag => s.version.to_s }

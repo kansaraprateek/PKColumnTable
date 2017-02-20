@@ -24,8 +24,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-//        itemTable.setScrollHorizontal(isScrolling: true)
-        itemTable.setupTableUI(data: [kPKTableBKG:UIColor.red, kPKTableCellBackgroundColor: UIColor.red])
+        itemTable.setScrollHorizontal(isScrolling: true)
+//        itemTable.setupTableUI(data: [kPKTableBKG:UIColor.red, kPKTableCellBackgroundColor: UIColor.red])
         itemTable.delegate = self
         itemTable.setTableColumnTitles(titles: ["Column 1", "Column 2", "Column 3"], data: tableData as NSArray, columnWidths: [0.3, 0.3 , 0.4], isFloatingHeader: true)
         

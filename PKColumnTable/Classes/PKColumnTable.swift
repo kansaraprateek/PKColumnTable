@@ -46,7 +46,7 @@ public class PKColumTable: UIView {
         self.setNeedsLayout()
         
         let tapGesture = UILongPressGestureRecognizer.init(target: self, action: #selector(self.handleTap(_:)))
-        tapGesture.minimumPressDuration = 0
+        tapGesture.minimumPressDuration = 0.1
         scrollView.addGestureRecognizer(tapGesture)
     }
     
@@ -174,24 +174,17 @@ public class PKColumTable: UIView {
         if let indexpath = tableView.indexPathForRow(at: touchPoint) {
             let _ : PKColumnTableCustomCell = tableView.cellForRow(at: indexpath) as! PKColumnTableCustomCell
             
-//            switch getsureRecognizer.state {
-//            case .began:
-//                cell.addShadowToViews(cornerRadius: 0)
-//                cell.layer.zPosition = 5
-//                UIView.animate(withDuration: 0.5, animations: {
-//                    self.tableView.reloadRows(at: [indexpath], with: .none)
-//                })
-//                break
-//            case .ended:
-//                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 12, options: .beginFromCurrentState, animations: {
-//                    cell.removeShadowFromView(cornerRadius: 0)
-//                }, completion: nil)
-//                break
-//            default:
-//                break
-//            }
-            if self.delegate?.responds(to: #selector(PKColumnTableDelegate.didSelectRow(atIndex:))) != nil{
-                delegate?.didSelectRow(atIndex: indexpath)
+            switch getsureRecognizer.state {
+            case .began:
+                if self.delegate?.responds(to: #selector(PKColumnTableDelegate.didSelectRow(atIndex:))) != nil{
+                    delegate?.didSelectRow(atIndex: indexpath)
+                }
+                break
+            case .ended:
+                
+                break
+            default:
+                break
             }
         }
     }

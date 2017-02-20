@@ -9,6 +9,11 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+## Screenshots
+
+<img src="http://www.prateekkansara.com/GitProjectImages/PKColumnTable/PKColumnTableNoScroll.png" width="320" height="667"></img> 
+<img src="http://www.prateekkansara.com/GitProjectImages/PKColumnTable/PKColumTableScroll.gif" width="320" height="667"></img> 
+
 ## Requirements
 
 ## Installation
