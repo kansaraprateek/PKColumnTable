@@ -1,7 +1,7 @@
 {
   "name": "PKColumnTable",
   "version": "0.1.0",
-  "summary": "A short description of PKColumnTable.",
+  "summary": "UItable View with Column fields.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/kansaraprateek/PKColumnTable",
   "license": {

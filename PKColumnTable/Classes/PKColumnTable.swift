@@ -7,3 +7,175 @@
 //
 
 import Foundation
+import QuartzCore
+
+@objc protocol PKColumnTableDelegate : NSObjectProtocol{
+     func didSelectRow(atIndex : IndexPath)
+}
+
+public class PKColumTable: UIView {
+    
+    let scrollView : UIScrollView = UIScrollView()
+    fileprivate let tableView : UITableView = UITableView()
+    
+    var delegate : PKColumnTableDelegate?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+//        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override public func awakeFromNib() {
+        self.setNeedsLayout()
+        
+        let tapGesture = UILongPressGestureRecognizer.init(target: self, action: #selector(self.handleTap(_:)))
+        tapGesture.minimumPressDuration = 0
+        scrollView.addGestureRecognizer(tapGesture)
+    }
+    
+    fileprivate var gRect : CGRect!
+    fileprivate func initializeViews(){
+        
+        tableView.frame = bounds
+        layoutIfNeeded()
+        scrollView.frame = bounds
+        tableView.isUserInteractionEnabled = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.tableFooterView = UIView.init(frame: .zero)
+        gRect = frame
+        tableView.estimatedRowHeight = PKTableConstants().defaultTableCellHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        tableView.removeFromSuperview()
+        scrollView.removeFromSuperview()
+        addSubview(scrollView)
+        scrollView.addSubview(tableView)
+    }
+    
+    public func setScrollHorizontal(isScrolling : Bool){
+        initializeViews()
+        if isScrolling{
+            scrollView.contentSize = CGSize.init(width: tableView.frame.width, height: tableView.frame.height)
+            gRect = tableView.frame
+        }
+        else{
+            scrollView.contentSize = CGSize(width : 0, height: 0)
+        }
+        if columnTitles.count>0{
+            setHeaderWithColumnData()
+        }
+        tableView.reloadData()
+    }
+    
+    fileprivate var isFloating : Bool = false
+    fileprivate var gColumnWidths = NSArray()
+    fileprivate var columnTitles = NSArray()
+    fileprivate var tableData = NSArray()
+    public func setTableColumnTitles(titles : NSArray, data : NSArray, columnWidths : NSArray, isFloatingHeader : Bool){
+        if tableView.frame.width == 0{
+            initializeViews()
+        }
+        columnTitles = titles
+        tableData = data
+        gColumnWidths = columnWidths
+        isFloating = isFloatingHeader
+        
+        setHeaderWithColumnData()
+        tableView.reloadData()
+    }
+    
+    var headerHeight : CGFloat = PKTableConstants().defaultHeaderCellHeight
+    fileprivate var gHeaderView : PKColumnTableCustomCell!
+    fileprivate func setHeaderWithColumnData(){
+        
+        let headerView = PKColumnTableCustomCell.init(style: .default, reuseIdentifier: "header")
+        headerView.frame = CGRect(x: 0, y:0, width : gRect.width, height: headerHeight)
+        headerView.gRect = gRect
+        let CellData = NSMutableArray()
+        for i in 0..<columnTitles.count{
+            CellData.add([kPKCellTitleKey: columnTitles[i], kPKCellWeightKey: gColumnWidths[i]])
+        }
+        headerView.setColumnData(data: CellData, isHeaderTitle: true)
+        gHeaderView = headerView
+        
+        tableView.tableHeaderView = nil
+        if !isFloating{
+           tableView.tableHeaderView = gHeaderView
+        }
+    }
+    
+    @objc fileprivate func handleTap(_ getsureRecognizer : UITapGestureRecognizer){
+        
+        let touchPoint : CGPoint = getsureRecognizer.location(in: tableView)
+        if let indexpath = tableView.indexPathForRow(at: touchPoint) {
+            let cell : PKColumnTableCustomCell = tableView.cellForRow(at: indexpath) as! PKColumnTableCustomCell
+            
+//            switch getsureRecognizer.state {
+//            case .began:
+//                cell.addShadowToViews(cornerRadius: 0)
+//                cell.layer.zPosition = 5
+//                UIView.animate(withDuration: 0.5, animations: {
+//                    self.tableView.reloadRows(at: [indexpath], with: .none)
+//                })
+//                break
+//            case .ended:
+//                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 12, options: .beginFromCurrentState, animations: {
+//                    cell.removeShadowFromView(cornerRadius: 0)
+//                }, completion: nil)
+//                break
+//            default:
+//                break
+//            }
+            if self.delegate?.responds(to: #selector(PKColumnTableDelegate.didSelectRow(atIndex:))) != nil{
+                delegate?.didSelectRow(atIndex: indexpath)
+            }
+        }
+    }
+}
+
+extension PKColumTable : UITableViewDelegate, UITableViewDataSource{
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableData.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = PKColumnTableCustomCell.init(style: .default, reuseIdentifier: "Cell")
+        cell.gRect = gRect
+        let cellValueData = NSMutableArray()
+        for i in 0..<(tableData[indexPath.row] as AnyObject).count{
+            cellValueData.add([kPKCellTitleKey: (tableData[indexPath.row] as AnyObject)[i], kPKCellWeightKey: gColumnWidths[i]])
+        }
+        cell.setColumnData(data: cellValueData, isHeaderTitle: false)
+        
+        return cell
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if isFloating{
+            return gHeaderView.frame.height
+        }
+        return 0
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if isFloating && (gHeaderView != nil){
+            return gHeaderView
+        }
+        return nil
+    }
+}

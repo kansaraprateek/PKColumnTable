@@ -7,12 +7,25 @@
 //
 
 import UIKit
+import PKColumnTable
 
 class ViewController: UIViewController {
 
+    
+    @IBOutlet var itemTable: PKColumTable!
+    
+    
+    let tableData = [["1", "2", "3"],
+                     ["4", "5", "6"],
+                     ["7", "8", "9"],
+                     ["10", "12", "13"],
+                     ["14", "24", "34"],
+                     ]
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+//        itemTable.setScrollHorizontal(isScrolling: true)
+        itemTable.setTableColumnTitles(titles: ["Column 1", "Column 2", "Column 3"], data: tableData as NSArray, columnWidths: [0.3, 0.3 , 0.4], isFloatingHeader: true)
     }
 
     override func didReceiveMemoryWarning() {
