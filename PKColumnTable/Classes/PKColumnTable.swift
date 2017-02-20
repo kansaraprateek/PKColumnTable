@@ -9,7 +9,12 @@
 import Foundation
 import QuartzCore
 
-@objc protocol PKColumnTableDelegate : NSObjectProtocol{
+/// Delegate method to handle selection on table view row
+@objc public protocol PKColumnTableDelegate : NSObjectProtocol{
+    
+     /// Method called when tableview row selected
+     ///
+     /// - Parameter atIndex: IndexPath object with selected row indexpath.
      func didSelectRow(atIndex : IndexPath)
 }
 
@@ -18,11 +23,19 @@ public class PKColumTable: UIView {
     let scrollView : UIScrollView = UIScrollView()
     fileprivate let tableView : UITableView = UITableView()
     
-    var delegate : PKColumnTableDelegate?
+    open weak  var delegate : PKColumnTableDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
+    
+    /// Defaul views background values
+    var defaultUITableData = [
+        kPKHeaderBKG : PKTableConstants().defaultBkgColor,
+        kPKTableBKG : PKTableConstants().defaultBkgColor,
+        kPKScrollBKG : PKTableConstants().defaultBkgColor,
+        kPKViewBKG : PKTableConstants().defaultBkgColor
+        ] as [String : Any]
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -38,6 +51,8 @@ public class PKColumTable: UIView {
     }
     
     fileprivate var gRect : CGRect!
+    
+    /// Initializing view with frame and size
     fileprivate func initializeViews(){
         
         tableView.frame = bounds
@@ -57,6 +72,33 @@ public class PKColumTable: UIView {
         scrollView.addSubview(tableView)
     }
     
+    /// Method to update views with Background values
+    fileprivate func updatinUIValues(){
+        tableView.backgroundColor = defaultUITableData[kPKTableBKG] as! UIColor?
+        scrollView.backgroundColor = defaultUITableData[kPKTableBKG] as! UIColor?
+        backgroundColor = defaultUITableData[kPKTableBKG] as! UIColor?
+    }
+    
+    fileprivate var CellUIData : [String:Any]?
+    
+    ///  Method to update current UI values with new user given values
+    ///
+    /// - Parameter data: [String:Any] type object with public constant keys and there respective values
+    public func setupTableUI(data : [String: Any]?){
+        let keys = data?.keys
+        if keys != nil{
+            for key in keys!{
+                defaultUITableData[key] = data?[key]
+            }
+        }
+        CellUIData = data
+        updatinUIValues()
+        tableView.reloadData()
+    }
+    
+    /// Method to set horizontal scrolling or not
+    ///
+    /// - Parameter isScrolling: Bool variable to set scrolling enable or disable
     public func setScrollHorizontal(isScrolling : Bool){
         initializeViews()
         if isScrolling{
@@ -76,6 +118,14 @@ public class PKColumTable: UIView {
     fileprivate var gColumnWidths = NSArray()
     fileprivate var columnTitles = NSArray()
     fileprivate var tableData = NSArray()
+    
+    /// Method to set Table header column and data values
+    ///
+    /// - Parameters:
+    ///   - titles: NSArray object with title values
+    ///   - data: 2-D array object with table data values
+    ///   - columnWidths: NSArray object with column width in percentage with respect to frame
+    ///   - isFloatingHeader: Wheather to make the header float or not.
     public func setTableColumnTitles(titles : NSArray, data : NSArray, columnWidths : NSArray, isFloatingHeader : Bool){
         if tableView.frame.width == 0{
             initializeViews()
@@ -91,6 +141,8 @@ public class PKColumTable: UIView {
     
     var headerHeight : CGFloat = PKTableConstants().defaultHeaderCellHeight
     fileprivate var gHeaderView : PKColumnTableCustomCell!
+    
+    /// Creating a header view for table with column values
     fileprivate func setHeaderWithColumnData(){
         
         let headerView = PKColumnTableCustomCell.init(style: .default, reuseIdentifier: "header")
@@ -99,6 +151,9 @@ public class PKColumTable: UIView {
         let CellData = NSMutableArray()
         for i in 0..<columnTitles.count{
             CellData.add([kPKCellTitleKey: columnTitles[i], kPKCellWeightKey: gColumnWidths[i]])
+        }
+        if CellUIData != nil{
+            headerView.setUITextDict(dictData: CellUIData!)
         }
         headerView.setColumnData(data: CellData, isHeaderTitle: true)
         gHeaderView = headerView
@@ -109,11 +164,15 @@ public class PKColumTable: UIView {
         }
     }
     
-    @objc fileprivate func handleTap(_ getsureRecognizer : UITapGestureRecognizer){
+    
+    /// Method to handle tap gesture on PKColumnTable
+    ///
+    /// - Parameter getsureRecognizer: UILongPressGestureRecognizer object to handle the tap gesture
+    @objc fileprivate func handleTap(_ getsureRecognizer : UILongPressGestureRecognizer){
         
         let touchPoint : CGPoint = getsureRecognizer.location(in: tableView)
         if let indexpath = tableView.indexPathForRow(at: touchPoint) {
-            let cell : PKColumnTableCustomCell = tableView.cellForRow(at: indexpath) as! PKColumnTableCustomCell
+            let _ : PKColumnTableCustomCell = tableView.cellForRow(at: indexpath) as! PKColumnTableCustomCell
             
 //            switch getsureRecognizer.state {
 //            case .began:
@@ -155,6 +214,9 @@ extension PKColumTable : UITableViewDelegate, UITableViewDataSource{
         let cellValueData = NSMutableArray()
         for i in 0..<(tableData[indexPath.row] as AnyObject).count{
             cellValueData.add([kPKCellTitleKey: (tableData[indexPath.row] as AnyObject)[i], kPKCellWeightKey: gColumnWidths[i]])
+        }
+        if CellUIData != nil{
+            cell.setUITextDict(dictData: CellUIData!)
         }
         cell.setColumnData(data: cellValueData, isHeaderTitle: false)
         

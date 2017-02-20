@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Setting Library constants
 class PKTableConstants: NSObject {
     
     let defaultFont = UIFont.init(name: "AvenirNext-Medium", size: 14.0)
@@ -22,19 +23,22 @@ class PKTableConstants: NSObject {
     let defaultTableCellHeight : CGFloat = 40
 }
 
-// Font constants
+/// Public constants for end user to update
+public let kPKTableColumnTitleFont = "kTableColumnTitleFont"
+public let kPKTableColumnTitleColor = "kTableColumnTitleColor"
+public let kPKTableColumnTitleAlignment = "kPKTableColumnTitleAlignment"
+public let kPKTableCellTextAlignment = "kPKTableCellTextAlignment"
+public let kPKTableCellTextColor = "kTableCellTextColor"
+public let kPKTableCellRowTextFont = "kTableCellRowTextFont"
+public let kPKTableCellBackgroundColor = "kTableCellBackgroundColor"
 
-let kPKTableColumnTitleFont = "kTableColumnTitleFont"
-let kPKTableColumnTitleColor = "kTableColumnTitleColor"
-let kPKTableColumnTitleAlignment = "kPKTableColumnTitleAlignment"
-let kPKTableCellTextAlignment = "kPKTableCellTextAlignment"
-let kPKTableCellTextColor = "kTableCellTextColor"
-let kPKTableCellRowTextFont = "kTableCellRowTextFont"
-let kPKTableCellBackgroundColor = "kTableCellBackgroundColor"
-let kPKTableBackgroundColor = "kTableBackgroundColor"
-
-let kPKTableColumnTextViewBkg = "kPKTableColumnTextViewBkg"
-let kPKTableCellTextViewBkg = "kPKTableCellTextViewBkg"
+public let kPKTableColumnTextViewBkg = "kPKTableColumnTextViewBkg"
+public let kPKTableCellTextViewBkg = "kPKTableCellTextViewBkg"
 
 let kPKCellTitleKey = "kCellTitleKey"
 let kPKCellWeightKey = "kCellWeightKey"
+
+public let kPKHeaderBKG = "kPKHeaderBKG"
+public let kPKTableBKG = "kPKTableBKG"
+public let kPKScrollBKG = "kPKScrollBKG"
+public let kPKViewBKG = "kPKViewBKG"

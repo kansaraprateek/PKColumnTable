@@ -25,13 +25,21 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 //        itemTable.setScrollHorizontal(isScrolling: true)
+        itemTable.setupTableUI(data: [kPKTableBKG:UIColor.red, kPKTableCellBackgroundColor: UIColor.red])
+        itemTable.delegate = self
         itemTable.setTableColumnTitles(titles: ["Column 1", "Column 2", "Column 3"], data: tableData as NSArray, columnWidths: [0.3, 0.3 , 0.4], isFloatingHeader: true)
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
 
+extension ViewController : PKColumnTableDelegate{
+    func didSelectRow(atIndex: IndexPath) {
+        print ("Row tapped : \(atIndex.row)")
+    }
+}

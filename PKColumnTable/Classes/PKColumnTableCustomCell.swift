@@ -12,6 +12,7 @@ import UIKit
 
 class PKColumnTableCustomCell : UITableViewCell{
     
+    /// Default CEll UI values
     var defaultUICellData = [
                 kPKTableColumnTitleFont : PKTableConstants().defaultFont!,
                 kPKTableColumnTitleColor : PKTableConstants().defaultTextColor,
@@ -36,6 +37,10 @@ class PKColumnTableCustomCell : UITableViewCell{
     }
     
     var gRect : CGRect!
+    
+    /// Method to update current UI values with new user given values
+    ///
+    /// - Parameter dictData: [String:Any] type object with public constant keys and there respective values
     func setUITextDict(dictData : [String : Any]) {
         let keys = dictData.keys
         for key in keys{
@@ -48,6 +53,12 @@ class PKColumnTableCustomCell : UITableViewCell{
     }
     
     fileprivate var gIsHeader = false
+    
+    /// Setting data to header or cell
+    ///
+    /// - Parameters:
+    ///   - data: NSArray object with header or cell values
+    ///   - isHeaderTitle: Bool value to know if it is a header or cell
     func setColumnData(data : NSArray, isHeaderTitle : Bool) {
         gIsHeader = isHeaderTitle
         var textViewX : CGFloat = 0
@@ -65,6 +76,9 @@ class PKColumnTableCustomCell : UITableViewCell{
         setTextViewUIElements(isHeader: isHeaderTitle)
     }
     
+    /// updating textview's UI elements
+    ///
+    /// - Parameter isHeader: Bool value to determine if it's a header or cell
     fileprivate func setTextViewUIElements(isHeader : Bool){
         
         for cellTextView in textViewArray{
