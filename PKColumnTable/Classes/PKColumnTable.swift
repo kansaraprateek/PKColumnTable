@@ -144,7 +144,7 @@ public class PKColumTable: UIView {
         tableView.reloadData()
     }
     
-    var headerHeight : CGFloat = PKTableConstants().defaultHeaderCellHeight
+    public var headerHeight : CGFloat = PKTableConstants().defaultHeaderCellHeight
     fileprivate var gHeaderView : PKColumnTableCustomCell!
     
     /// Creating a header view for table with column values
