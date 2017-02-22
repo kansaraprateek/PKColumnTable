@@ -23,7 +23,12 @@ public class PKColumTable: UIView {
     let scrollView : UIScrollView = UIScrollView()
     fileprivate let tableView : UITableView = UITableView()
     
-    open weak  var delegate : PKColumnTableDelegate?
+    open weak var delegate : PKColumnTableDelegate?
+    
+    @IBOutlet public var PKColumnDelegate: AnyObject? {
+        get { return delegate }
+        set { delegate = newValue as? PKColumnTableDelegate }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -155,6 +160,7 @@ public class PKColumTable: UIView {
         if CellUIData != nil{
             headerView.setUITextDict(dictData: CellUIData!)
         }
+        headerView.backgroundColor = defaultUITableData[kPKHeaderBKG] as! UIColor?
         headerView.setColumnData(data: CellData, isHeaderTitle: true)
         gHeaderView = headerView
         
