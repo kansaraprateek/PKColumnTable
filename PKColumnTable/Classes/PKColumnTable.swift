@@ -119,6 +119,12 @@ public class PKColumTable: UIView {
         tableView.reloadData()
     }
     
+    fileprivate func enableScrolling(){
+        tableView.frame = CGRect.init(x: tableView.frame.origin.x, y: tableView.frame.origin.y, width: tableView.frame.width, height: tableView.contentSize.height)
+        scrollView.contentSize = CGSize.init(width: tableView.frame.width, height: tableView.frame.height)
+        scrollView.isScrollEnabled = true
+    }
+    
     fileprivate var isFloating : Bool = false
     fileprivate var gColumnWidths = NSArray()
     fileprivate var columnTitles = NSArray()
@@ -238,5 +244,17 @@ extension PKColumTable : UITableViewDelegate, UITableViewDataSource{
             return gHeaderView
         }
         return nil
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            self.enableScrolling()
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        let lastRowIndex = tableView.numberOfRows(inSection: 0)
+        if indexPath.row == lastRowIndex-1{
+                self.enableScrolling()
+        }
     }
 }
